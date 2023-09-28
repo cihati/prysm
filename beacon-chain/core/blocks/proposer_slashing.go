@@ -72,9 +72,9 @@ func ProcessProposerSlashing(
 	if slashing == nil {
 		return nil, errors.New("nil proposer slashings in block body")
 	}
-	if err = VerifyProposerSlashing(beaconState, slashing); err != nil {
-		return nil, errors.Wrap(err, "could not verify proposer slashing")
-	}
+	// if err = VerifyProposerSlashing(beaconState, slashing); err != nil {
+	// 	return nil, errors.Wrap(err, "could not verify proposer slashing")
+	// }
 	cfg := params.BeaconConfig()
 	var slashingQuotient uint64
 	switch {

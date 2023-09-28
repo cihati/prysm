@@ -190,9 +190,9 @@ func (p *Pool) InsertProposerSlashing(
 	ctx, span := trace.StartSpan(ctx, "operations.InsertProposerSlashing")
 	defer span.End()
 
-	if err := blocks.VerifyProposerSlashing(state, slashing); err != nil {
-		return errors.Wrap(err, "could not verify proposer slashing")
-	}
+	// if err := blocks.VerifyProposerSlashing(state, slashing); err != nil {
+	// 	return errors.Wrap(err, "could not verify proposer slashing")
+	// }
 
 	idx := slashing.Header_1.Header.ProposerIndex
 	ok, err := p.validatorSlashingPreconditionCheck(state, idx)

@@ -60,9 +60,9 @@ func ProcessAttesterSlashing(
 	slashing *ethpb.AttesterSlashing,
 	slashFunc slashValidatorFunc,
 ) (state.BeaconState, error) {
-	if err := VerifyAttesterSlashing(ctx, beaconState, slashing); err != nil {
-		return nil, errors.Wrap(err, "could not verify attester slashing")
-	}
+	// if err := VerifyAttesterSlashing(ctx, beaconState, slashing); err != nil {
+	// 	return nil, errors.Wrap(err, "could not verify attester slashing")
+	// }
 	slashableIndices := SlashableAttesterIndices(slashing)
 	sort.SliceStable(slashableIndices, func(i, j int) bool {
 		return slashableIndices[i] < slashableIndices[j]

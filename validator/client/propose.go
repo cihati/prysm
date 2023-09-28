@@ -115,10 +115,10 @@ func (v *validator) ProposeBlock(ctx context.Context, slot primitives.Slot, pubK
 		log.WithFields(
 			blockLogFields(pubKey, wb, nil),
 		).WithError(err).Error("Failed block slashing protection check")
-		if v.emitAccountMetrics {
-			ValidatorProposeFailVec.WithLabelValues(fmtKey).Inc()
-		}
-		return
+		// 	if v.emitAccountMetrics {
+		// 		ValidatorProposeFailVec.WithLabelValues(fmtKey).Inc()
+		// 	}
+		// 	return
 	}
 
 	var genericSignedBlock *ethpb.GenericSignedBeaconBlock

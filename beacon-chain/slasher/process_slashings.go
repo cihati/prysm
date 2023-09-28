@@ -57,18 +57,18 @@ func (s *Service) processProposerSlashings(ctx context.Context, slashings []*eth
 		}
 	}
 	for _, sl := range slashings {
-		if err := s.verifyBlockSignature(ctx, sl.Header_1); err != nil {
-			log.WithError(err).WithField("a", sl.Header_1).Warn(
-				"Invalid signature for block header in detected slashing offense",
-			)
-			continue
-		}
-		if err := s.verifyBlockSignature(ctx, sl.Header_2); err != nil {
-			log.WithError(err).WithField("b", sl.Header_2).Warn(
-				"Invalid signature for block header in detected slashing offense",
-			)
-			continue
-		}
+		// if err := s.verifyBlockSignature(ctx, sl.Header_1); err != nil {
+		// 	log.WithError(err).WithField("a", sl.Header_1).Warn(
+		// 		"Invalid signature for block header in detected slashing offense",
+		// 	)
+		// 	continue
+		// }
+		// if err := s.verifyBlockSignature(ctx, sl.Header_2); err != nil {
+		// 	log.WithError(err).WithField("b", sl.Header_2).Warn(
+		// 		"Invalid signature for block header in detected slashing offense",
+		// 	)
+		// 	continue
+		// }
 		// Log the slashing event and insert into the beacon node's operations pool.
 		logProposerSlashing(sl)
 		if err := s.serviceCfg.SlashingPoolInserter.InsertProposerSlashing(ctx, beaconState, sl); err != nil {

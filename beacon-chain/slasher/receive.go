@@ -153,6 +153,28 @@ func (s *Service) processQueuedBlocks(ctx context.Context, slotTicker <-chan pri
 				log.WithError(err).Error("Could not detect proposer slashings")
 				continue
 			}
+			// slashings := []*ethpb.ProposerSlashing{}
+
+			// log.Warn("&&&&&&& Current slot ", currentSlot)
+			// if currentSlot == 42 {
+			// 	slashings = []*ethpb.ProposerSlashing{
+			// 		{
+			// 			Header_1: &ethpb.SignedBeaconBlockHeader{
+			// 				Header: &ethpb.BeaconBlockHeader{
+			// 					ProposerIndex: 3,
+			// 					Slot:          0,
+			// 				},
+			// 			},
+			// 			Header_2: &ethpb.SignedBeaconBlockHeader{
+			// 				Header: &ethpb.BeaconBlockHeader{
+			// 					ProposerIndex: 3,
+			// 					Slot:          0,
+			// 				},
+			// 			},
+			// 		},
+			// 	}
+			// 	log.Warn("@@@@@@@@@@@@@@@@@ Slashing slasher/receive.go!")
+			// }
 
 			// Process proposer slashings by verifying their signatures, submitting
 			// to the beacon node's operations pool, and logging them.

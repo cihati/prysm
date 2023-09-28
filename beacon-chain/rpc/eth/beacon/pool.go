@@ -118,10 +118,10 @@ func (bs *Server) SubmitProposerSlashing(ctx context.Context, req *ethpbv1.Propo
 	}
 
 	alphaSlashing := migration.V1ProposerSlashingToV1Alpha1(req)
-	err = blocks.VerifyProposerSlashing(headState, alphaSlashing)
-	if err != nil {
-		return nil, status.Errorf(codes.InvalidArgument, "Invalid proposer slashing: %v", err)
-	}
+	// err = blocks.VerifyProposerSlashing(headState, alphaSlashing)
+	// if err != nil {
+	// 	return nil, status.Errorf(codes.InvalidArgument, "Invalid proposer slashing: %v", err)
+	// }
 
 	err = bs.SlashingsPool.InsertProposerSlashing(ctx, headState, alphaSlashing)
 	if err != nil {

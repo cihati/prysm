@@ -120,6 +120,7 @@ func InitWithReset(c *Flags) func() {
 
 // configureTestnet sets the config according to specified testnet flag
 func configureTestnet(ctx *cli.Context) error {
+	log.Warn("!!!!!!!!!!!!!!!!!! Cihat slashing version1")
 	if ctx.Bool(PraterTestnet.Name) {
 		log.Warn("Running on the Prater Testnet")
 		if err := params.SetActive(params.PraterConfig().Copy()); err != nil {

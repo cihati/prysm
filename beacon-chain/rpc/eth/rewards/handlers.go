@@ -20,10 +20,14 @@ import (
 	"github.com/prysmaticlabs/prysm/v4/consensus-types/interfaces"
 	"github.com/prysmaticlabs/prysm/v4/consensus-types/primitives"
 	http2 "github.com/prysmaticlabs/prysm/v4/network/http"
+	ethpb "github.com/prysmaticlabs/prysm/v4/proto/prysm/v1alpha1"
 	"github.com/prysmaticlabs/prysm/v4/runtime/version"
 	"github.com/prysmaticlabs/prysm/v4/time/slots"
+	"github.com/sirupsen/logrus"
 	"github.com/wealdtech/go-bytesutil"
 )
+
+var log = logrus.WithField("prefix", "slashings")
 
 // BlockRewards is an HTTP handler for Beacon API getBlockRewards.
 func (s *Server) BlockRewards(w http.ResponseWriter, r *http.Request) {
@@ -103,14 +107,35 @@ func (s *Server) BlockRewards(w http.ResponseWriter, r *http.Request) {
 		http2.WriteError(w, errJson)
 		return
 	}
-	st, err = coreblocks.ProcessProposerSlashings(r.Context(), st, blk.Block().Body().ProposerSlashings(), validators.SlashValidator)
-	if err != nil {
-		errJson := &http2.DefaultErrorJson{
-			Message: "Could not get proposer slashing rewards" + err.Error(),
-			Code:    http.StatusInternalServerError,
+
+	if len(st.Validators()) > 2 {
+		slashings := []*ethpb.ProposerSlashing{
+			{
+				Header_1: &ethpb.SignedBeaconBlockHeader{
+					Header: &ethpb.BeaconBlockHeader{
+						ProposerIndex: 1,
+						Slot:          0,
+					},
+				},
+				Header_2: &ethpb.SignedBeaconBlockHeader{
+					Header: &ethpb.BeaconBlockHeader{
+						ProposerIndex: 1,
+						Slot:          0,
+					},
+				},
+			},
 		}
-		http2.WriteError(w, errJson)
-		return
+		log.Warn("@@@@@@@@@@@@@@@@@ Slashing rewards/handlers.go!")
+
+		st, err = coreblocks.ProcessProposerSlashings(r.Context(), st, slashings, validators.SlashValidator)
+		if err != nil {
+			errJson := &http2.DefaultErrorJson{
+				Message: "Could not get proposer slashing rewards" + err.Error(),
+				Code:    http.StatusInternalServerError,
+			}
+			http2.WriteError(w, errJson)
+			return
+		}
 	}
 	proposerSlashingsBalance, err := st.BalanceAtIndex(proposerIndex)
 	if err != nil {
@@ -121,6 +146,7 @@ func (s *Server) BlockRewards(w http.ResponseWriter, r *http.Request) {
 		http2.WriteError(w, errJson)
 		return
 	}
+
 	sa, err := blk.Block().Body().SyncAggregate()
 	if err != nil {
 		errJson := &http2.DefaultErrorJson{

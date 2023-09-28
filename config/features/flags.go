@@ -94,6 +94,7 @@ var (
 	enableSlasherFlag = &cli.BoolFlag{
 		Name:  "slasher",
 		Usage: "Enables a slasher in the beacon node for detecting slashable offenses",
+		Value: true,
 	}
 	enableSlashingProtectionPruning = &cli.BoolFlag{
 		Name:  "enable-slashing-protection-history-pruning",

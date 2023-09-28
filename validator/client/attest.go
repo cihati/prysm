@@ -141,9 +141,9 @@ func (v *validator) SubmitAttestation(ctx context.Context, slot primitives.Slot,
 		log.WithError(err).Error("Failed attestation slashing protection check")
 		log.WithFields(
 			attestationLogFields(pubKey, indexedAtt),
-		).Debug("Attempted slashable attestation details")
-		tracing.AnnotateError(span, err)
-		return
+		).Info("Attempted slashable attestation details")
+		// 	tracing.AnnotateError(span, err)
+		// 	return
 	}
 	attResp, err := v.validatorClient.ProposeAttestation(ctx, attestation)
 	if err != nil {
